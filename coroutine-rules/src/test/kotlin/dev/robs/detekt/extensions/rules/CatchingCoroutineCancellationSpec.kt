@@ -1,6 +1,6 @@
-package com.robs.detekt.extensions.rules
+package dev.robs.detekt.extensions.rules
 
-import com.robs.rules.CatchingCoroutineCancellation
+import dev.robs.rules.CatchingCoroutineCancellation
 import io.gitlab.arturbosch.detekt.rules.KotlinCoreEnvironmentTest
 import io.gitlab.arturbosch.detekt.test.assertThat
 import io.gitlab.arturbosch.detekt.test.compileAndLintWithContext

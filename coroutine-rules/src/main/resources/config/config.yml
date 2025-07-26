@@ -1,4 +1,4 @@
-coroutineRules:
+coroutine:
   CatchingCoroutineCancellation:
     active: true
   CatchingCoroutineCancellationLambda:

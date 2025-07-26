@@ -1,4 +1,4 @@
-package com.robs.rules
+package dev.robs.rules
 
 import io.gitlab.arturbosch.detekt.api.CodeSmell
 import io.gitlab.arturbosch.detekt.api.Config

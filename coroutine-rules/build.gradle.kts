@@ -1,16 +1,19 @@
 plugins {
     id("buildsrc.convention.detekt-rules")
 }
-dependencies {
-    compileOnly(libs.detektApi)
-    compileOnly(libs.detektTooling)
-    detektPlugins(libs.detektRulesRuleauthors)
-    testImplementation(libs.assertjCore)
-    testImplementation(libs.detektTest)
-    testImplementation(libs.junitJupiter)
-    testRuntimeOnly(libs.junitPlatformEngine)
-    testRuntimeOnly(libs.junitPlatformLauncher)
-}
-tasks.named<Test>("test") {
-    useJUnitPlatform()
+group = "dev.robch.rules"
+version = "1.0.0"
+publishing {
+    publications {
+        create<MavenPublication>("robs-rules") {
+            artifactId = "robs-rules"
+            from(components["java"])
+        }
+    }
+    repositories {
+        maven {
+            name = "myRepo"
+            url = uri(layout.buildDirectory.dir("repo"))
+        }
+    }
 }

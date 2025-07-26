@@ -8,6 +8,7 @@ import org.gradle.kotlin.dsl.the
 plugins {
     kotlin("jvm")
     id("io.gitlab.arturbosch.detekt")
+    `maven-publish`
 }
 val libs = the<LibrariesForLibs>()
 dependencies {
@@ -19,4 +20,7 @@ dependencies {
     testImplementation(libs.junitJupiter)
     testRuntimeOnly(libs.junitPlatformEngine)
     testRuntimeOnly(libs.junitPlatformLauncher)
+}
+tasks.named<Test>("test") {
+    useJUnitPlatform()
 }

@@ -1,8 +1,8 @@
 @file:Suppress("RedundantSuspendModifier")
 
-package com.robs.detekt.extensions.rules
+package dev.robs.detekt.extensions.rules
 
-import com.robs.rules.RunCatchingCoroutineCancellation
+import dev.robs.rules.RunCatchingCoroutineCancellation
 import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.api.SourceLocation
