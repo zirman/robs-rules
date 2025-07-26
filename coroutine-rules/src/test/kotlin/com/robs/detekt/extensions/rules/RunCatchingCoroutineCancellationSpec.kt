@@ -1,3 +1,5 @@
+@file:Suppress("RedundantSuspendModifier")
+
 package com.robs.detekt.extensions.rules
 
 import com.robs.rules.RunCatchingCoroutineCancellation
@@ -385,7 +387,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
     @Test
     fun `Allow no suspending function is used inside runBlocking`() {
         val code = """
-            @Suppress("RedundantSuspendModifier")
             suspend fun foo() {
                 runCatching {
                     Thread.sleep(1_000)
@@ -739,7 +740,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         fun `Report when suspend fun is called as extension function`() {
             val code = """
                 import kotlinx.coroutines.delay
-                @Suppress("RedundantSuspendModifier")
                 suspend fun List<Long>.await() = delay(this.size.toLong())
                 suspend fun foo() {
                     runCatching {
@@ -760,7 +760,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         fun `Allow when suspend fun is called as extension function`() {
             val code = """
                 import kotlinx.coroutines.*
-                @Suppress("RedundantSuspendModifier")
                 suspend fun List<Long>.await() = delay(this.size.toLong())
                 suspend fun foo() {
                     runCatching {
@@ -903,7 +902,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
     @Test
     fun `Report when suspend fun in for subject is used`() {
         val code = """
-            @Suppress("RedundantSuspendModifier")
             suspend fun bar() = 10
             suspend fun foo() {
                 runCatching {
@@ -925,7 +923,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
     fun `Allow when suspend fun in for subject is used`() {
         val code = """
             import kotlinx.coroutines.*
-            @Suppress("RedundantSuspendModifier")
             suspend fun bar() = 10
             suspend fun foo() {
                 runCatching {
@@ -1171,7 +1168,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
     fun `Report when suspend fun is called in string interpolation`() {
         val code = """
             import kotlinx.coroutines.delay
-            @Suppress("RedundantSuspendModifier")
             suspend fun foo() {
                 runCatching {
                     val string = "${'$'}{delay(1_000)}"
@@ -1190,7 +1186,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
     fun `Allow when suspend fun is called in string interpolation`() {
         val code = """
             import kotlinx.coroutines.*
-            @Suppress("RedundantSuspendModifier")
             suspend fun foo() {
                 runCatching {
                     val string = "${'$'}{delay(1_000)}"
@@ -1247,7 +1242,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         @Test
         fun `Report in case of suspend inc and dec operator`() {
             val code = """
-                @Suppress("RedundantSuspendModifier")
                 class OperatorClass {
                     suspend operator fun inc(): OperatorClass = OperatorClass()
                     suspend operator fun dec(): OperatorClass = OperatorClass()
@@ -1275,7 +1269,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         fun `Allow in case of suspend inc and dec operator`() {
             val code = """
                 import kotlinx.coroutines.*
-                @Suppress("RedundantSuspendModifier")
                 class OperatorClass {
                     suspend operator fun inc(): OperatorClass = OperatorClass()
                     suspend operator fun dec(): OperatorClass = OperatorClass()
@@ -1298,7 +1291,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         @Test
         fun `Report in case of suspend inc and dec operators called as function`() {
             val code = """
-                @Suppress("RedundantSuspendModifier")
                 class OperatorClass {
                     suspend operator fun inc(): OperatorClass = OperatorClass()
                     suspend operator fun dec(): OperatorClass = OperatorClass()
@@ -1326,7 +1318,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         fun `Allow in case of suspend inc and dec operators called as function`() {
             val code = """
                 import kotlinx.coroutines.*
-                @Suppress("RedundantSuspendModifier")
                 class OperatorClass {
                     suspend operator fun inc(): OperatorClass = OperatorClass()
                     suspend operator fun dec(): OperatorClass = OperatorClass()
@@ -1350,7 +1341,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         fun `Report in case of suspend not operator`() {
             val code = """
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun not() = false
                 }
                 suspend fun foo() {
@@ -1373,7 +1363,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val code = """
                 import kotlinx.coroutines.*
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun not() = false
                 }
                 suspend fun foo() {
@@ -1391,7 +1380,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         fun `Report in case of suspend unaryPlus operator`() {
             val code = """
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun unaryPlus() = OperatorClass()
                 }
                 suspend fun foo() {
@@ -1414,7 +1402,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val code = """
                 import kotlinx.coroutines.*
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun unaryPlus() = OperatorClass()
                 }
                 suspend fun foo() {
@@ -1432,7 +1419,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         fun `Report in case of suspend plus operator`() {
             val code = """
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun plus(test: OperatorClass) = test
                 }
                 suspend fun foo() {
@@ -1456,7 +1442,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val code = """
                 import kotlinx.coroutines.*
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun plus(test: OperatorClass) = test
                 }
                 suspend fun foo() {
@@ -1475,7 +1460,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         fun `Report in case of suspend div operator`() {
             val code = """
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun div(value: Int) = OperatorClass()
                 }
                 suspend fun foo() {
@@ -1498,7 +1482,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val code = """
                 import kotlinx.coroutines.*
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun div(value: Int) = OperatorClass()
                 }
                 suspend fun foo() {
@@ -1516,7 +1499,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         fun `Report in case of suspend compareTo operator`() {
             val code = """
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun compareTo(operatorClass: OperatorClass) = 0
                 }
                 suspend fun foo() {
@@ -1540,7 +1522,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val code = """
                 import kotlinx.coroutines.*
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun compareTo(operatorClass: OperatorClass) = 0
                 }
                 suspend fun foo() {
@@ -1559,7 +1540,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         fun `Report in case of suspend plusAssign operator`() {
             val code = """
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun plusAssign(operatorClass: OperatorClass) {}
                 }
                 suspend fun foo() {
@@ -1583,7 +1563,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val code = """
                 import kotlinx.coroutines.*
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun plusAssign(operatorClass: OperatorClass) {}
                 }
                 suspend fun foo() {
@@ -1602,7 +1581,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         fun `Report in case of suspend plus called as plusAssign operator`() {
             val code = """
                 class C
-                @Suppress("RedundantSuspendModifier")
                 suspend operator fun C.plus(i: Int): C = TODO()
                 suspend fun f() {
                     runCatching {
@@ -1625,7 +1603,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val code = """
                 import kotlinx.coroutines.*
                 class C
-                @Suppress("RedundantSuspendModifier")
                 suspend operator fun C.plus(i: Int): C = TODO()
                 suspend fun f() {
                     runCatching {
@@ -1689,7 +1666,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         fun `Report in case of suspend rangeTo operator`() {
             val code = """
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun rangeTo(operatorClass: OperatorClass) = OperatorClass()
                 }
                 suspend fun foo() {
@@ -1713,7 +1689,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val code = """
                 import kotlinx.coroutines.*
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun rangeTo(operatorClass: OperatorClass) = OperatorClass()
                 }
                 suspend fun foo() {
@@ -1732,7 +1707,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         fun `Report in case of suspend times operator`() {
             val code = """
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun times(operatorClass: OperatorClass) = OperatorClass()
                 }
                 suspend fun foo() {
@@ -1756,7 +1730,6 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val code = """
                 import kotlinx.coroutines.*
                 class OperatorClass {
-                    @Suppress("RedundantSuspendModifier")
                     suspend operator fun times(operatorClass: OperatorClass) = OperatorClass()
                 }
                 suspend fun foo() {
