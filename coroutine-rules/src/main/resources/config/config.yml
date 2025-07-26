@@ -1,4 +1,4 @@
-hackerRules:
+coroutineRules:
   CatchingCoroutineCancellation:
     active: true
   CatchingCoroutineCancellationLambda:

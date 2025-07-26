@@ -1,4 +1,4 @@
-package com.monoid.hackernews.detekt.rules
+package com.robs.rules
 
 import io.gitlab.arturbosch.detekt.api.CodeSmell
 import io.gitlab.arturbosch.detekt.api.Config

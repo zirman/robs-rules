@@ -1,6 +1,6 @@
-package com.monoid.hackernews.detekt.extensions.rules
+package com.robs.detekt.extensions.rules
 
-import com.monoid.hackernews.detekt.rules.CatchingCoroutineCancellation
+import com.robs.rules.CatchingCoroutineCancellation
 import io.gitlab.arturbosch.detekt.rules.KotlinCoreEnvironmentTest
 import io.gitlab.arturbosch.detekt.test.assertThat
 import io.gitlab.arturbosch.detekt.test.compileAndLintWithContext

@@ -1,13 +1,11 @@
-package com.monoid.hackernews.detekt
+package com.robs.rules
 
-import com.monoid.hackernews.detekt.rules.CatchingCoroutineCancellation
-import com.monoid.hackernews.detekt.rules.RunCatchingCoroutineCancellation
 import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.api.RuleSet
 import io.gitlab.arturbosch.detekt.api.RuleSetProvider
 
-internal class HackerRulesProvider : RuleSetProvider {
-    override val ruleSetId: String = "hackerRules"
+internal class CoroutineRulesProvider : RuleSetProvider {
+    override val ruleSetId: String = "coroutineRules"
     override fun instance(config: Config): RuleSet = RuleSet(
         id = ruleSetId,
         rules = listOf(

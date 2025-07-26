@@ -1,6 +1,6 @@
-package com.monoid.hackernews.detekt.extensions.rules
+package com.robs.detekt.extensions.rules
 
-import com.monoid.hackernews.detekt.rules.RunCatchingCoroutineCancellation
+import com.robs.rules.RunCatchingCoroutineCancellation
 import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.api.SourceLocation
