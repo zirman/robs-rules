@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="coroutine-detekt-rules.buildSrc" target="21" />
+      <module name="coroutine-detekt-rules.buildSrc.main" target="21" />
+      <module name="coroutine-detekt-rules.buildSrc.test" target="21" />
+      <module name="coroutine-detekt-rules.detekt-rules" target="21" />
+      <module name="coroutine-detekt-rules.detekt-rules.main" target="21" />
+      <module name="coroutine-detekt-rules.detekt-rules.test" target="21" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
