@@ -1,11 +1,7 @@
-[plugins]
-#kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version = "2.1.20" }
 [versions]
 jvmToolchain = "21"
 jvmTarget = "21"
 kotlin = "2.1.21" # https://github.com/jetbrains/kotlin/releases
-ksp = "2.1.21-2.0.2" # https://github.com/google/ksp/releases
-kotlinCoroutines = "1.10.2"
 junitJupiter = "6.0.0-M2"
 junitPlatform = "1.13.4"
 assertjCore = "3.27.3"
