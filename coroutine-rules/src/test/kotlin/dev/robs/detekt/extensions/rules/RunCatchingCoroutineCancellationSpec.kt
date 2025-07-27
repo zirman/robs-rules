@@ -751,8 +751,8 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             assertThat(findings).hasSize(1)
             assertFindingsForSuspendCall(
                 findings,
-                listOf(SourceLocation(5, 5)),
-                listOf(SourceLocation(5, 16)),
+                listOf(SourceLocation(4, 5)),
+                listOf(SourceLocation(4, 16)),
             )
         }
 
@@ -914,8 +914,8 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         val findings = subject.compileAndLintWithContext(env, code)
         assertFindingsForSuspendCall(
             findings,
-            listOf(SourceLocation(4, 5)),
-            listOf(SourceLocation(4, 16)),
+            listOf(SourceLocation(3, 5)),
+            listOf(SourceLocation(3, 16)),
         )
     }
 
@@ -1177,8 +1177,8 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
         val findings = subject.compileAndLintWithContext(env, code)
         assertFindingsForSuspendCall(
             findings,
-            listOf(SourceLocation(4, 5)),
-            listOf(SourceLocation(4, 16)),
+            listOf(SourceLocation(3, 5)),
+            listOf(SourceLocation(3, 16)),
         )
     }
 
@@ -1260,8 +1260,8 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val findings = subject.compileAndLintWithContext(env, code)
             assertFindingsForSuspendCall(
                 findings,
-                listOf(SourceLocation(11, 5), SourceLocation(7, 5)),
-                listOf(SourceLocation(11, 16), SourceLocation(7, 16)),
+                listOf(SourceLocation(10, 5), SourceLocation(6, 5)),
+                listOf(SourceLocation(10, 16), SourceLocation(6, 16)),
             )
         }
 
@@ -1309,8 +1309,8 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val findings = subject.compileAndLintWithContext(env, code)
             assertFindingsForSuspendCall(
                 findings,
-                listOf(SourceLocation(7, 5), SourceLocation(11, 5)),
-                listOf(SourceLocation(7, 16), SourceLocation(11, 16)),
+                listOf(SourceLocation(6, 5), SourceLocation(10, 5)),
+                listOf(SourceLocation(6, 16), SourceLocation(10, 16)),
             )
         }
 
@@ -1353,8 +1353,8 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val findings = subject.compileAndLintWithContext(env, code)
             assertFindingsForSuspendCall(
                 findings,
-                listOf(SourceLocation(6, 5)),
-                listOf(SourceLocation(6, 16)),
+                listOf(SourceLocation(5, 5)),
+                listOf(SourceLocation(5, 16)),
             )
         }
 
@@ -1392,8 +1392,8 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val findings = subject.compileAndLintWithContext(env, code)
             assertFindingsForSuspendCall(
                 findings,
-                listOf(SourceLocation(6, 5)),
-                listOf(SourceLocation(6, 16)),
+                listOf(SourceLocation(5, 5)),
+                listOf(SourceLocation(5, 16)),
             )
         }
 
@@ -1432,8 +1432,8 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val findings = subject.compileAndLintWithContext(env, code)
             assertFindingsForSuspendCall(
                 findings,
-                listOf(SourceLocation(6, 5)),
-                listOf(SourceLocation(6, 16)),
+                listOf(SourceLocation(5, 5)),
+                listOf(SourceLocation(5, 16)),
             )
         }
 
@@ -1472,8 +1472,8 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val findings = subject.compileAndLintWithContext(env, code)
             assertFindingsForSuspendCall(
                 findings,
-                listOf(SourceLocation(6, 5)),
-                listOf(SourceLocation(6, 16)),
+                listOf(SourceLocation(5, 5)),
+                listOf(SourceLocation(5, 16)),
             )
         }
 
@@ -1512,8 +1512,8 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val findings = subject.compileAndLintWithContext(env, code)
             assertFindingsForSuspendCall(
                 findings,
-                listOf(SourceLocation(6, 5)),
-                listOf(SourceLocation(6, 16)),
+                listOf(SourceLocation(5, 5)),
+                listOf(SourceLocation(5, 16)),
             )
         }
 
@@ -1553,8 +1553,8 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val findings = subject.compileAndLintWithContext(env, code)
             assertFindingsForSuspendCall(
                 findings,
-                listOf(SourceLocation(6, 5)),
-                listOf(SourceLocation(6, 16)),
+                listOf(SourceLocation(5, 5)),
+                listOf(SourceLocation(5, 16)),
             )
         }
 
@@ -1593,8 +1593,8 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val findings = subject.compileAndLintWithContext(env, code)
             assertFindingsForSuspendCall(
                 findings,
-                listOf(SourceLocation(5, 5)),
-                listOf(SourceLocation(5, 16)),
+                listOf(SourceLocation(4, 5)),
+                listOf(SourceLocation(4, 16)),
             )
         }
 
@@ -1679,8 +1679,8 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val findings = subject.compileAndLintWithContext(env, code)
             assertFindingsForSuspendCall(
                 findings,
-                listOf(SourceLocation(6, 5)),
-                listOf(SourceLocation(6, 16)),
+                listOf(SourceLocation(5, 5)),
+                listOf(SourceLocation(5, 16)),
             )
         }
 
@@ -1720,8 +1720,8 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val findings = subject.compileAndLintWithContext(env, code)
             assertFindingsForSuspendCall(
                 findings,
-                listOf(SourceLocation(6, 5)),
-                listOf(SourceLocation(6, 16)),
+                listOf(SourceLocation(5, 5)),
+                listOf(SourceLocation(5, 16)),
             )
         }
 

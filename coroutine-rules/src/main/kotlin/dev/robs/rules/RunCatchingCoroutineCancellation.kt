@@ -38,6 +38,7 @@ import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 // https://betterprogramming.pub/the-silent-killer-thats-crashing-your-coroutines-9171d1e8f79b
 // https://github.com/Kotlin/kotlinx.coroutines/issues/3658
 
+@Suppress("TooManyFunctions")
 @RequiresTypeResolution
 class RunCatchingCoroutineCancellation(config: Config) : Rule(config) {
 

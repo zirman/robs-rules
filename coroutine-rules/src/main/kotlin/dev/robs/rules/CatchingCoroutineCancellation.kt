@@ -36,6 +36,7 @@ import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameOrNull
 // Based on SleepInsteadOfDelay code from Detekt project:
 // https://github.com/detekt/detekt/blob/main/detekt-rules-coroutines/src/main/kotlin/io/gitlab/arturbosch/detekt/rules/coroutines/SleepInsteadOfDelay.kt
 
+@Suppress("TooManyFunctions")
 @RequiresTypeResolution
 class CatchingCoroutineCancellation(config: Config = Config.empty) : Rule(config) {
 
