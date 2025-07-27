@@ -31,7 +31,7 @@ Add this to your detekt config.
 robs-rules:
   CatchingCoroutineCancellation:
     active: true
-  CatchingCoroutineCancellationLambda:
+  RunCatchingCoroutineCancellation:
     active: true
 ```
 

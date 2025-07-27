@@ -1,5 +1,5 @@
 robs-rules:
   CatchingCoroutineCancellation:
     active: true
-  CatchingCoroutineCancellationLambda:
+  RunCatchingCoroutineCancellation:
     active: true
