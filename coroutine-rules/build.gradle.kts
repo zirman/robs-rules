@@ -4,7 +4,7 @@ plugins {
 mavenPublishing {
     publishToMavenCentral()
     signAllPublications()
-    coordinates("dev.robch.rules", "robs-rules", "1.0.0")
+    coordinates("dev.robch.rules", "robs-rules", "1.0.1")
     pom {
         name = "Rob's Rules"
         description = "Detekt rules for preventing coroutine cancellation bugs"
