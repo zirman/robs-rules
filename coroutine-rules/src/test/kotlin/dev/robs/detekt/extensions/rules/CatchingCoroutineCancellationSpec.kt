@@ -12,6 +12,7 @@ class CatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironment) 
 
     @Test
     fun `Detect caught Throwable in suspend fun`() {
+        // TODO: see if this can be made to pass if there are no suspend calls in try block
         val code = """
             suspend fun main() {
                 try {
