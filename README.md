@@ -51,7 +51,7 @@ suspend fun catchThrowable() {
 
 ## Example code that passes
 ```kotlin
-suspend fun main() {
+suspend fun handlesCancellation() {
     try {
         delay(1_000)
     } catch (throwable: Throwable) {
@@ -63,7 +63,7 @@ suspend fun main() {
 
 ## Example code fails
 ```kotlin
-suspend fun foo() {
+suspend fun runCatchingInSuspend() {
     runCatching {
         delay(1_000)
     }
@@ -72,7 +72,7 @@ suspend fun foo() {
 
 ## Example code passes
 ```kotlin
-suspend fun foo() {
+suspend fun handlesCancellation() {
     runCatching {
         delay(1_000)
     }.onFailure {
