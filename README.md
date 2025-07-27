@@ -41,7 +41,7 @@ These rules require [type resolution](https://detekt.dev/docs/gettingstarted/typ
 ./gradlew detektMain
 ```
 
-## Example code fails
+## Failing code
 ```kotlin
 suspend fun catchThrowable() {
     try {
@@ -52,7 +52,7 @@ suspend fun catchThrowable() {
 }
 ```
 
-## Example code that passes
+## Passing code
 ```kotlin
 suspend fun handlesCancellation() {
     try {
@@ -64,7 +64,7 @@ suspend fun handlesCancellation() {
 }
 ```
 
-## Example code fails
+## Failing code
 ```kotlin
 suspend fun runCatchingInSuspend() {
     runCatching {
@@ -73,7 +73,7 @@ suspend fun runCatchingInSuspend() {
 }
 ```
 
-## Example code passes
+## Passing code
 ```kotlin
 suspend fun handlesCancellation() {
     runCatching {
