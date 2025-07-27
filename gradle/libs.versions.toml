@@ -6,10 +6,12 @@ junitJupiter = "6.0.0-M2"
 junitPlatform = "1.13.4"
 assertjCore = "3.27.3"
 detekt = "1.23.8"
+publish = "0.34.0"
 
 [libraries]
 plugin-kotlinGradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-detektGradle = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
+plugin-publishGradle = { group = "com.vanniktech.maven.publish", name = "com.vanniktech.maven.publish.gradle.plugin", version.ref = "publish" }
 
 # dependencies
 junitJupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
@@ -27,4 +29,5 @@ detektRulesRuleauthors = { group = "io.gitlab.arturbosch.detekt", name = "detekt
 plugins = [
     "plugin-detektGradle",
     "plugin-kotlinGradle",
+    "plugin-publishGradle",
 ]

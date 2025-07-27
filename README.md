@@ -37,6 +37,9 @@ robs-rules:
 
 ## Type Resolution
 These rules require [type resolution](https://detekt.dev/docs/gettingstarted/type-resolution/) to be enabled.
+```
+./gradlew detektMain
+```
 
 ## Example code fails
 ```kotlin

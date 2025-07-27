@@ -1,19 +1,33 @@
 plugins {
     id("buildsrc.convention.detekt-rules")
 }
-group = "dev.robch.rules"
-version = "1.0.0"
-publishing {
-    publications {
-        create<MavenPublication>("robs-rules") {
-            artifactId = "robs-rules"
-            from(components["java"])
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+    coordinates("dev.robch.rules", "robs-rules", "1.0.0")
+    pom {
+        name = "Rob's Rules"
+        description = "Detekt rules for preventing coroutine cancellation bugs"
+        inceptionYear = "2025"
+        url = "https://github.com/zirman/robs-rules/"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
         }
-    }
-    repositories {
-        maven {
-            name = "myRepo"
-            url = uri(layout.buildDirectory.dir("repo"))
+        developers {
+            developer {
+                id = "zirman"
+                name = "Robert Chrzanowski"
+                url = "https://github.com/zirman/"
+            }
+        }
+        scm {
+            url = "https://github.com/zirman/robs-rules/"
+            connection = "scm:git:git://github.com/zirman/robs-rules.git"
+            developerConnection = "scm:git:ssh://git@github.com/zirman/robs-rules.git"
         }
     }
 }
