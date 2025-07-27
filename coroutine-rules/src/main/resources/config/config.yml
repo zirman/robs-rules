@@ -1,4 +1,4 @@
-coroutine:
+robs-rules:
   CatchingCoroutineCancellation:
     active: true
   CatchingCoroutineCancellationLambda:

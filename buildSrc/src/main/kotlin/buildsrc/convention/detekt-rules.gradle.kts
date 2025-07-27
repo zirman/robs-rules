@@ -9,7 +9,7 @@ import org.gradle.accessors.dm.LibrariesForLibs
 plugins {
     kotlin("jvm")
     id("io.gitlab.arturbosch.detekt")
-    `maven-publish`
+    id("com.vanniktech.maven.publish")
 }
 val libs = the<LibrariesForLibs>()
 detekt {
