@@ -3,7 +3,7 @@ plugins {
 }
 mavenPublishing {
     publishToMavenCentral()
-    signAllPublications()
+//    signAllPublications()
     coordinates("dev.robch.rules", "robs-rules", "1.0.1")
     pom {
         name = "Rob's Rules"

@@ -10,12 +10,14 @@ import io.gitlab.arturbosch.detekt.api.Severity
 import io.gitlab.arturbosch.detekt.api.internal.RequiresTypeResolution
 import io.gitlab.arturbosch.detekt.rules.safeAs
 import org.jetbrains.kotlin.backend.common.descriptors.isSuspend
+import org.jetbrains.kotlin.codegen.inline.isInlineOrInsideInline
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtCallableReferenceExpression
 import org.jetbrains.kotlin.psi.KtCatchClause
 import org.jetbrains.kotlin.psi.KtExpression
+import org.jetbrains.kotlin.psi.KtLambdaArgument
 import org.jetbrains.kotlin.psi.KtTryExpression
 import org.jetbrains.kotlin.psi.KtValueArgument
 import org.jetbrains.kotlin.resolve.BindingContext
@@ -67,9 +69,18 @@ class CatchingCoroutineCancellation(config: Config = Config.empty) : Rule(config
         isEnsureActiveCalled().not()
 
     private fun KtBlockExpression.hasSuspendCalls(): Boolean = statements.any {
-        it.safeAs<KtCallExpression>()
+        val descriptor = it.safeAs<KtCallExpression>()
             ?.getResolvedCall(bindingContext)
-            ?.resultingDescriptor?.isSuspend == true
+            ?.resultingDescriptor
+
+        descriptor?.isSuspend == true ||
+            (descriptor?.isInlineOrInsideInline() == true &&
+                it.safeAs<KtCallExpression>()?.lambdaArguments
+                    ?.any { it?.hasSuspendCalls() == true } == true)
+    }
+
+    private fun KtLambdaArgument.hasSuspendCalls(): Boolean {
+        return getLambdaExpression()?.bodyExpression?.hasSuspendCalls() == true
     }
 
     private fun KtCatchClause.catchesCoroutineCancellation(): Boolean {
