@@ -2010,6 +2010,22 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
                 val findings = subject.compileAndLintWithContext(env, code)
                 assertThat(findings).isEmpty()
             }
+
+            @Test
+            fun `Allow when suspend block is passed to non inline function asdf`() {
+                val code = """
+                    suspend inline fun bar(block: suspend () -> Unit) {
+                        block()
+                    }
+                    suspend fun foo() {
+                        runCatching {
+                            bar(::foo)
+                        }
+                    }
+                """.trimIndent()
+                val findings = subject.compileAndLintWithContext(env, code)
+                assertThat(findings).hasSize(1)
+            }
         }
     }
 

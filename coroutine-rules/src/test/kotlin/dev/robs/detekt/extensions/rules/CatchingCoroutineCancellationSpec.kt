@@ -256,13 +256,14 @@ class CatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironment) 
     }
 
     @Test
-    fun `Detect caught CancellationException when a lambda try block has suspend calls2`() {
+    fun `Detect caught CancellationException when an inline lambda call has a suspend calls`() {
         val code = """
             import kotlinx.coroutines.delay
             suspend fun main() {
                 try {
                     run {
                         delay(1_000)
+                        println("Hello, World!")
                     }
                 } catch (throwable: Throwable) {
                     throwable.printStackTrace()
@@ -274,16 +275,37 @@ class CatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironment) 
     }
 
     @Test
-    fun `Detect caught CancellationException when a lambda try block has suspend calls 3`() {
+    fun `Pass caught CancellationException when an inline lambda call has a suspend calls and catch block calls ensureActive()`() {
         val code = """
             import kotlinx.coroutines.delay
-            inline fun foo(block: () -> Unit) {
-                //block()            
-            }
             suspend fun main() {
                 try {
-                    foo {
-                        delay(1_000)
+                    run {
+                        println("Hello, World!")
+                    }
+                } catch (throwable: Throwable) {
+                    currentCoroutineContext().ensureActive()
+                    throwable.printStackTrace()
+                }
+            }
+        """.trimIndent()
+        val findings = CatchingCoroutineCancellation().compileAndLintWithContext(env, code)
+        assertThat(findings).isEmpty()
+    }
+
+    @Test
+    fun `Pass caught CancellationException when an inline la`() {
+        val code = """
+            import kotlinx.coroutines.delay
+            inline fun bar(noinline block: () -> Unit) {
+            }
+            suspend fun foo() {
+                try {
+                    run {
+                        run {
+                            delay(1_000)
+                            println("Hello, World!")
+                        }
                     }
                 } catch (throwable: Throwable) {
                     throwable.printStackTrace()
@@ -293,18 +315,22 @@ class CatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironment) 
         val findings = CatchingCoroutineCancellation().compileAndLintWithContext(env, code)
         assertThat(findings).hasSize(1)
     }
+
+    @Test
+    fun `Pass caught CancellationException when an inline lfa`() {
+        val code = """
+            import kotlinx.coroutines.delay
+            suspend fun foo() {
+                try {
+                    runCatching {
+                        delay(1_000)                
+                    }
+                } catch (throwable: Throwable) {
+                    throwable.printStackTrace()
+                }
+            }
+        """.trimIndent()
+        val findings = CatchingCoroutineCancellation().compileAndLintWithContext(env, code)
+        assertThat(findings).isEmpty()
+    }
 }
-//
-//suspend fun x() {}
-//inline fun foo(noinline block: () -> Unit) {
-//    block()
-//}
-//suspend fun main() {
-//    try {
-//        foo {
-//            x()
-//        }
-//    } catch (throwable: Throwable) {
-//        throwable.printStackTrace()
-//    }
-//}

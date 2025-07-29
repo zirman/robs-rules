@@ -108,7 +108,7 @@ class RunCatchingCoroutineCancellation(config: Config) : Rule(config) {
 
     private fun KtCallExpression.hasSuspendCalls(): Boolean =
         anyDescendantOfType<KtExpression>(
-            canGoInside = { this == it || shouldTraverseInside(it) },
+            canGoInside = { this == it || it.shouldTraverseInside() },
         ) { it.hasSuspendCalls() }
 
     @Suppress("ReturnCount")
@@ -139,33 +139,23 @@ class RunCatchingCoroutineCancellation(config: Config) : Rule(config) {
         else -> false
     }
 
-    private fun shouldTraverseInside(
-        psiElement: PsiElement,
-    ): Boolean = when (psiElement) {
-        is KtCallExpression -> psiElement.getResolvedCall(bindingContext)
+    private fun PsiElement.shouldTraverseInside(): Boolean = when (this) {
+        is KtCallExpression -> getResolvedCall(bindingContext)
             ?.resultingDescriptor?.safeAs<FunctionDescriptor>()
             ?.let { CATCHING_FQ_NAMES.contains(it.fqNameSafe).not() && it.isInline } == true
 
-        is KtValueArgument -> psiElement.getStrictParentOfType<KtCallExpression>()
+        is KtValueArgument -> getStrictParentOfType<KtCallExpression>()
             ?.getResolvedCall(bindingContext)
-            ?.getParameterForArgument(psiElement)
+            ?.getParameterForArgument(this)
             ?.let { it.isCrossinline.not() && it.isNoinline.not() } == true
 
         else -> true
     }
-
-    companion object {
-        private val RUN_CATCHING_FQ_NAME = FqName("kotlin.runCatching")
-        private val CATCHING_FQ_NAMES = listOf(
-            RUN_CATCHING_FQ_NAME,
-            FqName("kotlin.recoverCatching"),
-            FqName("kotlin.mapCatching"),
-        )
-        private val ON_FAILURE_FQ_NAME = FqName("kotlin.onFailure")
-        private val ENSURE_ACTIVE_FQ_NAME = FqName("kotlinx.coroutines.ensureActive")
-
-        // Based on code from Kotlin project:
-        // https://github.com/JetBrains/kotlin/commit/87bbac9d43e15557a2ff0dc3254fd41a9d5639e1
-        private val COROUTINE_CONTEXT_FQ_NAME = COROUTINES_PACKAGE_FQ_NAME.child(Name.identifier("coroutineContext"))
-    }
 }
+
+private val ON_FAILURE_FQ_NAME = FqName("kotlin.onFailure")
+private val ENSURE_ACTIVE_FQ_NAME = FqName("kotlinx.coroutines.ensureActive")
+
+// Based on code from Kotlin project:
+// https://github.com/JetBrains/kotlin/commit/87bbac9d43e15557a2ff0dc3254fd41a9d5639e1
+private val COROUTINE_CONTEXT_FQ_NAME = COROUTINES_PACKAGE_FQ_NAME.child(Name.identifier("coroutineContext"))

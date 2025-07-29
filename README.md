@@ -10,12 +10,12 @@ cancellation is handled correctly in catch blocks, `runCatching`, `mapCatching` 
 ## Usage
 In the `dependencies` block of your `build.gradle` file, add the following:
 ```
-detektPlugins("dev.robch.rules:robs-rules:1.0.1")
+detektPlugins("dev.robch.rules:robs-rules:1.0.2")
 ```
 
 or if you're using a `libs.version.toml` file, add this there:
 ```
-robs-rules = { module = "dev.robch.rules:robs-rules", version = "1.0.1" }
+robs-rules = { module = "dev.robch.rules:robs-rules", version = "1.0.2" }
 ```
 
 and this in your `build.gradle` file:

@@ -9,20 +9,25 @@ import io.gitlab.arturbosch.detekt.api.Rule
 import io.gitlab.arturbosch.detekt.api.Severity
 import io.gitlab.arturbosch.detekt.api.internal.RequiresTypeResolution
 import io.gitlab.arturbosch.detekt.rules.safeAs
-import org.jetbrains.kotlin.backend.common.descriptors.isSuspend
-import org.jetbrains.kotlin.codegen.inline.isInlineOrInsideInline
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtCallableReferenceExpression
 import org.jetbrains.kotlin.psi.KtCatchClause
 import org.jetbrains.kotlin.psi.KtExpression
-import org.jetbrains.kotlin.psi.KtLambdaArgument
+import org.jetbrains.kotlin.psi.KtForExpression
+import org.jetbrains.kotlin.psi.KtOperationExpression
 import org.jetbrains.kotlin.psi.KtTryExpression
 import org.jetbrains.kotlin.psi.KtValueArgument
+import org.jetbrains.kotlin.psi.psiUtil.anyDescendantOfType
+import org.jetbrains.kotlin.psi.psiUtil.getStrictParentOfType
 import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.resolve.calls.util.getParameterForArgument
 import org.jetbrains.kotlin.resolve.calls.util.getResolvedCall
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameOrNull
+import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 
 // Handling coroutine cancellation to avoid bugs
 // https://betterprogramming.pub/the-silent-killer-thats-crashing-your-coroutines-9171d1e8f79b
@@ -55,32 +60,54 @@ class CatchingCoroutineCancellation(config: Config = Config.empty) : Rule(config
                 issue = issue,
                 entity = Entity.from(this),
                 message = "Check for coroutine cancellation with `currentCoroutineContext().ensureActive()` to " +
-                    "prevent [coroutine cancellation bugs]" +
-                    "(https://betterprogramming.pub/the-silent-killer-thats-crashing-your-coroutines-9171d1e8f79b).",
+                        "prevent [coroutine cancellation bugs]" +
+                        "(https://betterprogramming.pub/the-silent-killer-thats-crashing-your-coroutines-9171d1e8f79b).",
             )
         )
     }
 
     @Suppress("ForbiddenComment")
     private fun KtCatchClause.shouldReport(): Boolean = catchesCoroutineCancellation() &&
-        parent.safeAs<KtTryExpression>()?.tryBlock?.hasSuspendCalls() == true &&
-        // TODO: check if there is a catch block up the chain that has already handled coroutine
-        //       cancellation
-        isEnsureActiveCalled().not()
+            parent.safeAs<KtTryExpression>()?.tryBlock?.hasSuspendCalls() == true &&
+            // TODO: check if there is a catch block up the chain that has already handled coroutine
+            //       cancellation
+            isEnsureActiveCalled().not()
 
-    private fun KtBlockExpression.hasSuspendCalls(): Boolean = statements.any {
-        val descriptor = it.safeAs<KtCallExpression>()
-            ?.getResolvedCall(bindingContext)
-            ?.resultingDescriptor
+    private fun KtBlockExpression.hasSuspendCalls(): Boolean =
+        anyDescendantOfType<KtExpression>(
+            canGoInside = { this == it || it.shouldTraverseInside() },
+        ) { it.hasSuspendCalls() }
 
-        descriptor?.isSuspend == true ||
-            (descriptor?.isInlineOrInsideInline() == true &&
-                it.safeAs<KtCallExpression>()?.lambdaArguments
-                    ?.any { it?.hasSuspendCalls() == true } == true)
+    @Suppress("ReturnCount")
+    private fun KtExpression.hasSuspendCalls(): Boolean = when (this) {
+        is KtForExpression -> listOf(
+            bindingContext[BindingContext.LOOP_RANGE_ITERATOR_RESOLVED_CALL, loopRange],
+            bindingContext[BindingContext.LOOP_RANGE_HAS_NEXT_RESOLVED_CALL, loopRange],
+            bindingContext[BindingContext.LOOP_RANGE_NEXT_RESOLVED_CALL, loopRange],
+        ).any { it?.resultingDescriptor?.isSuspend == true }
+
+        is KtCallExpression, is KtOperationExpression -> getResolvedCall(bindingContext)
+            ?.resultingDescriptor?.safeAs<FunctionDescriptor>()
+            ?.isSuspend == true
+
+        // is KtNameReferenceExpression -> getResolvedCall(bindingContext)
+        //     ?.resultingDescriptor?.safeAs<PropertyDescriptor>()
+        //     ?.fqNameSafe == COROUTINE_CONTEXT_FQ_NAME
+
+        else -> false
     }
 
-    private fun KtLambdaArgument.hasSuspendCalls(): Boolean {
-        return getLambdaExpression()?.bodyExpression?.hasSuspendCalls() == true
+    private fun PsiElement.shouldTraverseInside(): Boolean = when (this) {
+        is KtCallExpression -> getResolvedCall(bindingContext)
+            ?.resultingDescriptor?.safeAs<FunctionDescriptor>()
+            ?.let { CATCHING_FQ_NAMES.contains(it.fqNameSafe).not() && it.isInline } == true
+
+        is KtValueArgument -> getStrictParentOfType<KtCallExpression>()
+            ?.getResolvedCall(bindingContext)
+            ?.getParameterForArgument(this)
+            ?.let { it.isCrossinline.not() && it.isNoinline.not() } == true
+
+        else -> true
     }
 
     private fun KtCatchClause.catchesCoroutineCancellation(): Boolean {
